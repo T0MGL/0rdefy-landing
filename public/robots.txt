@@ -1,0 +1,11 @@
+# robots.txt for Ordefy Waitlist
+User-agent: *
+Allow: /
+Allow: /whitelist
+Allow: /waitlist-success
+
+# Sitemap
+Sitemap: https://ordefy.com/sitemap.xml
+
+# Disallow API routes
+Disallow: /api/
