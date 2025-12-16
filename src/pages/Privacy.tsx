@@ -11,7 +11,7 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-hidden bg-black">
       {/* Background */}
       {showAnimation ? (
         <div className="absolute inset-0 z-0">
@@ -19,7 +19,7 @@ export default function Privacy() {
         </div>
       ) : (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-black via-sidebar-background to-black" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-black to-sidebar-background" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(186,234,89,0.1),transparent_50%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,rgba(186,234,89,0.05)_50%,transparent_100%)] animate-[shimmer_3s_ease-in-out_infinite]" />
         </div>
