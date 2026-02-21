@@ -51,7 +51,68 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   </head>
+  <style>
+    #init-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: hsl(240, 10%, 4%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+    #init-loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #init-loader .il-glow {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: rgba(186, 234, 89, 0.05);
+      filter: blur(100px);
+    }
+    #init-loader .il-corner {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      border-color: rgba(255, 255, 255, 0.06);
+      border-style: solid;
+    }
+    @keyframes il-ring {
+      from { stroke-dashoffset: 226; }
+      to   { stroke-dashoffset: 0; }
+    }
+  </style>
   <body style="background-color: hsl(240, 10%, 4%); margin: 0;">
+    <!-- Static preloader: shown instantly before JS loads -->
+    <div id="init-loader">
+      <div class="il-glow"></div>
+      <div class="il-corner" style="top:32px;left:32px;border-width:1px 0 0 1px;"></div>
+      <div class="il-corner" style="top:32px;right:32px;border-width:1px 1px 0 0;"></div>
+      <div class="il-corner" style="bottom:32px;left:32px;border-width:0 0 1px 1px;"></div>
+      <div class="il-corner" style="bottom:32px;right:32px;border-width:0 1px 1px 0;"></div>
+      <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;">
+        <div style="position:relative;width:80px;height:80px;">
+          <svg width="80" height="80" viewBox="0 0 80 80" style="display:block;">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="hsl(84,81%,63%)" stroke-width="1.5"
+              stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226"
+              style="transform:rotate(-90deg);transform-origin:40px 40px;animation:il-ring 2.5s linear forwards;"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,hsl(84,81%,63%),hsl(84,81%,50%));display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(186,234,89,0.3);">
+              <span style="color:black;font-weight:700;font-size:21px;font-family:Inter,sans-serif;">O</span>
+            </div>
+          </div>
+        </div>
+        <div style="color:white;font-family:Inter,sans-serif;font-size:30px;font-weight:600;letter-spacing:-0.5px;margin-top:12px;">ordefy</div>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

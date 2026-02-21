@@ -11,6 +11,21 @@ import './index.css';
 import Lenis from 'lenis';
 
 function App() {
+  // Remove the static HTML preloader (shown before JS loads) once React mounts
+  useEffect(() => {
+    const loader = document.getElementById('init-loader');
+    if (!loader) return;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const rafId = requestAnimationFrame(() => {
+      loader.classList.add('fade-out');
+      timeoutId = setTimeout(() => loader.remove(), 400);
+    });
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   useEffect(() => {
     // Detect mobile device
     const isMobile = window.innerWidth < 768;
