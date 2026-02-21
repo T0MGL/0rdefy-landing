@@ -126,5 +126,17 @@
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Fallback: remove preloader after 6s in case no React component claims it -->
+    <script>
+      (function () {
+        var MAX = 6000;
+        var t = setTimeout(function () {
+          var el = document.getElementById('_html-preloader');
+          if (el) { el.classList.add('fade-out'); setTimeout(function () { el.remove(); }, 450); }
+        }, MAX);
+        window.__clearPreloaderFallback = function () { clearTimeout(t); };
+      })();
+    </script>
   </body>
 </html>
