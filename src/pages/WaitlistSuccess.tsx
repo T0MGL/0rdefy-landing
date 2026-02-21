@@ -28,7 +28,7 @@ export default function WaitlistSuccess() {
     }, isMobile ? 3000 : 5000);
 
     // Throttled resize handler for better performance
-    let resizeTimeout: NodeJS.Timeout;
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
@@ -66,7 +66,7 @@ export default function WaitlistSuccess() {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 12,
       },
@@ -79,7 +79,7 @@ export default function WaitlistSuccess() {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 10,
       },
