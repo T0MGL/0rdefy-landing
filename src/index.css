@@ -2,15 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Lenis Smooth Scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Light theme - main background light */
-    --background: 0 0% 98%;
-    --foreground: 240 10% 10%;
+    /* Dark theme - matches landing page */
+    --background: 240 10% 4%;
+    --foreground: 0 0% 95%;
 
     /* Cards pure white */
     --card: 0 0% 100%;
@@ -19,9 +40,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 10%;
 
-    /* LIME GREEN PRIMARY - Restored! */
+    /* LIME GREEN PRIMARY - Extended palette */
     --primary: 84 81% 63%;
     --primary-foreground: 240 10% 10%;
+    --primary-50: 84 81% 95%;
+    --primary-100: 84 81% 90%;
+    --primary-200: 84 81% 80%;
+    --primary-300: 84 81% 70%;
+    --primary-400: 84 81% 63%;
+    --primary-500: 84 70% 50%;
+    --primary-600: 84 65% 40%;
 
     /* Secondary neutral gray */
     --secondary: 240 5% 96%;
@@ -45,6 +73,12 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* Dark backgrounds for premium landing */
+    --dark-900: 240 10% 4%;
+    --dark-800: 240 10% 6%;
+    --dark-700: 240 8% 10%;
+    --dark-600: 240 8% 14%;
+
     /* Sidebar dark */
     --sidebar-background: 240 8% 12%;
     --sidebar-foreground: 0 0% 95%;
@@ -61,15 +95,24 @@ All colors MUST be HSL.
     --chart-blue: 217 91% 60%;
     --chart-purple: 271 81% 56%;
     --chart-yellow: 48 96% 53%;
-    
+
     /* Subtle shadows */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
     --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1);
     --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1);
     --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.1);
-    
+
     /* Animations */
     --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Glassmorphism presets */
+    --glass-bg: 240 10% 6% / 0.7;
+    --glass-border: 84 81% 63% / 0.2;
+    --glass-blur: 24px;
+
+    /* Section spacing */
+    --section-padding-y: 6rem;
+    --section-padding-y-mobile: 4rem;
   }
 }
 
@@ -78,8 +121,156 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1, "ss02" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Premium text selection */
+  ::selection {
+    background: hsl(84 81% 63% / 0.3);
+    color: white;
+  }
+
+  ::-moz-selection {
+    background: hsl(84 81% 63% / 0.3);
+    color: white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(240 10% 6%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(240 8% 20%);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(84 81% 63% / 0.5);
+  }
+
+  /* Focus visible styles */
+  :focus-visible {
+    outline: 2px solid hsl(84 81% 63%);
+    outline-offset: 2px;
+  }
+
+  /* Smooth images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Better link defaults */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* Premium utility classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Glass effect utility */
+  .glass {
+    @apply backdrop-blur-xl bg-white/[0.02] border border-white/10;
+  }
+
+  .glass-strong {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 100ms; }
+  .stagger-2 { animation-delay: 200ms; }
+  .stagger-3 { animation-delay: 300ms; }
+  .stagger-4 { animation-delay: 400ms; }
+  .stagger-5 { animation-delay: 500ms; }
+
+  /* Premium glow effects */
+  .glow-sm {
+    box-shadow: 0 0 20px hsl(84 81% 63% / 0.2);
+  }
+
+  .glow-md {
+    box-shadow: 0 0 40px hsl(84 81% 63% / 0.25);
+  }
+
+  .glow-lg {
+    box-shadow: 0 0 60px hsl(84 81% 63% / 0.3);
+  }
+
+  /* Text shadow for better readability */
+  .text-glow {
+    text-shadow: 0 0 30px hsl(84 81% 63% / 0.5);
+  }
+
+  /* GPU acceleration for better animation performance */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Optimize animations for mobile */
+  @media (max-width: 768px) {
+    /* Reduce blur effects on mobile for better performance */
+    .backdrop-blur-2xl {
+      backdrop-filter: blur(16px);
+    }
+
+    .backdrop-blur-xl {
+      backdrop-filter: blur(12px);
+    }
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
