@@ -12,6 +12,16 @@ import Lenis from 'lenis';
 
 function App() {
   useEffect(() => {
+    // Remove HTML preloader now that React has painted the first frame
+    const preloader = document.getElementById('_html-preloader');
+    if (preloader) {
+      preloader.classList.add('fade-out');
+      const t = setTimeout(() => preloader.remove(), 450);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
+  useEffect(() => {
     // Detect mobile device
     const isMobile = window.innerWidth < 768;
 

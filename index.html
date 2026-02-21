@@ -51,8 +51,79 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
+    <!-- Instant preloader styles — zero JS dependency, renders before any script -->
+    <style>
+      @keyframes _pl-dot {
+        0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+        40%            { transform: scale(1);   opacity: 1;   }
+      }
+      #_html-preloader {
+        position: fixed;
+        inset: 0;
+        background: hsl(240, 10%, 4%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        transition: opacity 0.45s ease;
+      }
+      #_html-preloader.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #_html-preloader ._pl-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #_html-preloader ._pl-wordmark {
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+        font-size: 26px;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: -0.5px;
+      }
+      #_html-preloader ._pl-dots {
+        margin-top: 36px;
+        display: flex;
+        gap: 7px;
+      }
+      #_html-preloader ._pl-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: hsl(84, 81%, 63%);
+        animation: _pl-dot 1.4s ease-in-out infinite;
+      }
+      #_html-preloader ._pl-dots span:nth-child(2) { animation-delay: 0.2s; }
+      #_html-preloader ._pl-dots span:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+
   </head>
   <body style="background-color: hsl(240, 10%, 4%); margin: 0;">
+
+    <!-- Instant preloader: painted by browser before any JS is downloaded or executed -->
+    <div id="_html-preloader">
+      <div class="_pl-logo">
+        <!-- Layers icon — matches the icon used in Navigation.tsx -->
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+          stroke="hsl(84,81%,63%)" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+        <span class="_pl-wordmark">ordefy</span>
+      </div>
+      <div class="_pl-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
