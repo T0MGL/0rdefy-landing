@@ -12,6 +12,19 @@ import Lenis from 'lenis';
 
 function App() {
   useEffect(() => {
+    // Fade out and remove the static HTML preloader now that React has rendered.
+    // For first-visit: LoadingScreen (z-9999) is already covering the HTML
+    // preloader (z-50), so this fade is invisible — zero black flash.
+    // For return-visits and all other routes: fades out against the live page.
+    const el = document.getElementById('_html-preloader');
+    if (el) {
+      el.classList.add('fade-out');
+      const t = setTimeout(() => el.remove(), 420);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
+  useEffect(() => {
     // Detect mobile device
     const isMobile = window.innerWidth < 768;
 

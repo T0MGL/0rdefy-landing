@@ -31,20 +31,6 @@ export default function Whitelist() {
     return () => clearTimeout(timer);
   }, [setAnimationShown]);
 
-  // For return visits (hasVisited=true) there is no LoadingScreen to take over,
-  // so we fade out the static HTML preloader ourselves once the page has mounted.
-  useEffect(() => {
-    if (hasVisited) {
-      const el = document.getElementById('_html-preloader');
-      if (el) {
-        el.classList.add('fade-out');
-        const t = setTimeout(() => el.remove(), 450);
-        return () => clearTimeout(t);
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleLoadingComplete = () => {
     setIsLoading(false);
     setHasVisited(true);

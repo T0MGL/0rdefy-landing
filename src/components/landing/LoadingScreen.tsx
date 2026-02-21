@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -8,14 +8,6 @@ interface LoadingScreenProps {
 }
 
 export function LoadingScreen({ onComplete, minDuration = 2500 }: LoadingScreenProps) {
-  // Remove the static HTML preloader synchronously before the first paint.
-  // LoadingScreen covers the full screen with the same background, so there is
-  // no visual change — this eliminates the black flash between the two preloaders.
-  useLayoutEffect(() => {
-    const el = document.getElementById('_html-preloader');
-    if (el) el.remove();
-  }, []);
-
   const [phase, setPhase] = useState<"loading" | "revealing" | "exiting">("loading");
   const [progress, setProgress] = useState(0);
   const [hasWindowLoaded, setHasWindowLoaded] = useState(
@@ -75,7 +67,7 @@ export function LoadingScreen({ onComplete, minDuration = 2500 }: LoadingScreenP
     <div
       ref={containerRef}
       className={cn(
-        "fixed inset-0 z-[100] flex items-center justify-center bg-[hsl(240,10%,4%)] overflow-hidden",
+        "fixed inset-0 z-[9999] flex items-center justify-center bg-[hsl(240,10%,4%)] overflow-hidden",
         phase === "exiting" && "pointer-events-none"
       )}
     >
