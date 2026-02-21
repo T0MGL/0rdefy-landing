@@ -10,27 +10,57 @@ interface LoadingScreenProps {
 export function LoadingScreen({ onComplete, minDuration = 2500 }: LoadingScreenProps) {
   const [phase, setPhase] = useState<"loading" | "revealing" | "exiting">("loading");
   const [progress, setProgress] = useState(0);
+  const [hasWindowLoaded, setHasWindowLoaded] = useState(
+    () => typeof document !== "undefined" && document.readyState === "complete"
+  );
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasWindowLoadedRef = useRef(hasWindowLoaded);
+
+  useEffect(() => {
+    hasWindowLoadedRef.current = hasWindowLoaded;
+  }, [hasWindowLoaded]);
+
+  useEffect(() => {
+    if (hasWindowLoaded) {
+      return;
+    }
+
+    const handleLoad = () => {
+      setHasWindowLoaded(true);
+    };
+
+    window.addEventListener("load", handleLoad, { once: true });
+    return () => window.removeEventListener("load", handleLoad);
+  }, [hasWindowLoaded]);
 
   useEffect(() => {
     const startTime = Date.now();
+    let revealTimeout: ReturnType<typeof setTimeout> | null = null;
+    let exitTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / minDuration) * 100, 100);
+      const minDurationReached = elapsed >= minDuration;
+      const readyToExit = minDurationReached && hasWindowLoadedRef.current;
+      const maxProgress = readyToExit ? 100 : 95;
+      const newProgress = Math.min((elapsed / minDuration) * 100, maxProgress);
       setProgress(newProgress);
 
-      if (newProgress >= 100) {
+      if (readyToExit) {
         clearInterval(interval);
         setPhase("revealing");
-        setTimeout(() => {
+        revealTimeout = setTimeout(() => {
           setPhase("exiting");
-          setTimeout(onComplete, 800);
+          exitTimeout = setTimeout(onComplete, 800);
         }, 600);
       }
     }, 16);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (revealTimeout) clearTimeout(revealTimeout);
+      if (exitTimeout) clearTimeout(exitTimeout);
+    };
   }, [minDuration, onComplete]);
 
   return (

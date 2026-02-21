@@ -11,12 +11,6 @@ import './index.css';
 import Lenis from 'lenis';
 
 function App() {
-  // Remove the static HTML preloader instantly when React mounts.
-  // React LoadingScreen (z-index:100) is already rendered underneath — instant swap, no flash.
-  useEffect(() => {
-    document.getElementById('init-loader')?.remove();
-  }, []);
-
   useEffect(() => {
     // Detect mobile device
     const isMobile = window.innerWidth < 768;
