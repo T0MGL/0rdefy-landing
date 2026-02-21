@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface LoadingScreenProps {
@@ -137,9 +138,9 @@ export function LoadingScreen({ onComplete, minDuration = 2500 }: LoadingScreenP
                 phase === "exiting" && "scale-125 opacity-0"
               )}
             >
-              {/* Stylized "O" for Ordefy */}
+              {/* Logo: matches Navigation */}
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-[0_0_30px_rgba(186,234,89,0.3)]">
-                <span className="text-black font-bold text-xl">O</span>
+                <Layers className="w-5 h-5 text-black" strokeWidth={2.5} />
               </div>
             </div>
           </div>

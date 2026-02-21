@@ -11,19 +11,10 @@ import './index.css';
 import Lenis from 'lenis';
 
 function App() {
-  // Remove the static HTML preloader (shown before JS loads) once React mounts
+  // Remove the static HTML preloader instantly when React mounts.
+  // React LoadingScreen (z-index:100) is already rendered underneath — instant swap, no flash.
   useEffect(() => {
-    const loader = document.getElementById('init-loader');
-    if (!loader) return;
-    let timeoutId: ReturnType<typeof setTimeout>;
-    const rafId = requestAnimationFrame(() => {
-      loader.classList.add('fade-out');
-      timeoutId = setTimeout(() => loader.remove(), 400);
-    });
-    return () => {
-      cancelAnimationFrame(rafId);
-      clearTimeout(timeoutId);
-    };
+    document.getElementById('init-loader')?.remove();
   }, []);
 
   useEffect(() => {
