@@ -1,40 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Navigation } from "@/components/landing/Navigation";
 import { Hero } from "@/components/landing/Hero";
-import { IntegrationLogos } from "@/components/landing/IntegrationLogos";
-import { ProblemSection } from "@/components/landing/ProblemSection";
-import { ProductShowcase } from "@/components/landing/ProductShowcase";
-import { FeatureGrid } from "@/components/landing/FeatureGrid";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { ComparisonSection } from "@/components/landing/ComparisonSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { LatamSection } from "@/components/landing/LatamSection";
-import { FAQSection } from "@/components/landing/FAQSection";
-import { FinalCTA } from "@/components/landing/FinalCTA";
-import { Footer } from "@/components/landing/Footer";
-import { TypeformModal } from "@/components/landing/TypeformModal";
-import { LoadingScreen } from "@/components/landing/LoadingScreen";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+// Below-fold sections load lazily in parallel after Hero is visible.
+// Each becomes a separate chunk — browser fetches them all at once
+// while the user reads the hero copy.
+const IntegrationLogos = lazy(() =>
+  import("@/components/landing/IntegrationLogos").then(m => ({ default: m.IntegrationLogos }))
+);
+const ProblemSection = lazy(() =>
+  import("@/components/landing/ProblemSection").then(m => ({ default: m.ProblemSection }))
+);
+const ProductShowcase = lazy(() =>
+  import("@/components/landing/ProductShowcase").then(m => ({ default: m.ProductShowcase }))
+);
+const FeatureGrid = lazy(() =>
+  import("@/components/landing/FeatureGrid").then(m => ({ default: m.FeatureGrid }))
+);
+const HowItWorks = lazy(() =>
+  import("@/components/landing/HowItWorks").then(m => ({ default: m.HowItWorks }))
+);
+const ComparisonSection = lazy(() =>
+  import("@/components/landing/ComparisonSection").then(m => ({ default: m.ComparisonSection }))
+);
+const TestimonialsSection = lazy(() =>
+  import("@/components/landing/TestimonialsSection").then(m => ({ default: m.TestimonialsSection }))
+);
+const LatamSection = lazy(() =>
+  import("@/components/landing/LatamSection").then(m => ({ default: m.LatamSection }))
+);
+const FAQSection = lazy(() =>
+  import("@/components/landing/FAQSection").then(m => ({ default: m.FAQSection }))
+);
+const FinalCTA = lazy(() =>
+  import("@/components/landing/FinalCTA").then(m => ({ default: m.FinalCTA }))
+);
+const Footer = lazy(() =>
+  import("@/components/landing/Footer").then(m => ({ default: m.Footer }))
+);
+// Modal only loads when user actually opens it
+const TypeformModal = lazy(() =>
+  import("@/components/landing/TypeformModal").then(m => ({ default: m.TypeformModal }))
+);
 
 export default function Whitelist() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasVisited, setHasVisited] = useLocalStorage("ordefy_visited", false);
-  const [, setAnimationShown] = useLocalStorage("premium_animation_shown", false);
-
-  // Mark animation as shown after initial render
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationShown(true);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [setAnimationShown]);
-
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-    setHasVisited(true);
-  };
 
   const handleEmailSubmit = (email: string) => {
     setUserEmail(email);
@@ -42,9 +53,7 @@ export default function Whitelist() {
   };
 
   const handleCtaClick = () => {
-    // Scroll to hero section smoothly
     window.scrollTo({ top: 0, behavior: "smooth" });
-    // Focus on email input after scroll
     setTimeout(() => {
       const emailInput = document.querySelector('input[type="email"]');
       if (emailInput instanceof HTMLInputElement) {
@@ -53,61 +62,44 @@ export default function Whitelist() {
     }, 500);
   };
 
-  // Show loading screen only on first visit
-  if (isLoading && !hasVisited) {
-    return <LoadingScreen onComplete={handleLoadingComplete} minDuration={2500} />;
-  }
-
   return (
     <div className="min-h-screen bg-[hsl(240,10%,4%)] overflow-x-hidden">
-      {/* Navigation */}
+      {/* Navigation + Hero load eagerly — visible on first paint */}
       <Navigation onCtaClick={handleCtaClick} />
 
-      {/* Main Content */}
       <main className="bg-[hsl(240,10%,4%)]">
-        {/* Hero Section - First email capture */}
         <Hero onEmailSubmit={handleEmailSubmit} />
 
-        {/* Integration Logos - Quick credibility */}
-        <IntegrationLogos />
-
-        {/* Problem Section - PAS Framework (Pain-Agitate-Solution) */}
-        <ProblemSection />
-
-        {/* Product Showcase - Visual solution */}
-        <ProductShowcase />
-
-        {/* Features Section - What they get */}
-        <FeatureGrid />
-
-        {/* How It Works Section - Simplicity */}
-        <HowItWorks />
-
-        {/* Comparison Section - Why Ordefy vs Others */}
-        <ComparisonSection />
-
-        {/* Testimonials Section - Social proof */}
-        <TestimonialsSection />
-
-        {/* LATAM Section - Local credibility */}
-        <LatamSection />
-
-        {/* FAQ Section - Objection handling */}
-        <FAQSection />
-
-        {/* Final CTA Section - Last email capture */}
-        <FinalCTA onEmailSubmit={handleEmailSubmit} />
+        {/* All below-fold sections share one Suspense boundary.
+            They load in parallel right after Hero paints. */}
+        <Suspense fallback={null}>
+          <IntegrationLogos />
+          <ProblemSection />
+          <ProductShowcase />
+          <FeatureGrid />
+          <HowItWorks />
+          <ComparisonSection />
+          <TestimonialsSection />
+          <LatamSection />
+          <FAQSection />
+          <FinalCTA onEmailSubmit={handleEmailSubmit} />
+        </Suspense>
       </main>
 
-      {/* Footer */}
-      <Footer />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
 
-      {/* Typeform Modal */}
-      <TypeformModal
-        email={userEmail}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {/* Modal chunk only fetched when user opens it */}
+      {isModalOpen && (
+        <Suspense fallback={null}>
+          <TypeformModal
+            email={userEmail}
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

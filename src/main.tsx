@@ -1,49 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import Whitelist from './pages/Whitelist';
-import WaitlistSuccess from './pages/WaitlistSuccess';
-import Privacy from './pages/Privacy';
-import Pricing from './pages/Pricing';
-import Features from './pages/Features';
 import './index.css';
 import Lenis from 'lenis';
 
+// Non-critical routes lazy-loaded — removes Three.js + framer-motion
+// from the initial bundle (WaitlistSuccess/Privacy use shader-animation)
+const WaitlistSuccess = lazy(() => import('./pages/WaitlistSuccess'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Features = lazy(() => import('./pages/Features'));
+
 function App() {
   useEffect(() => {
-    // Fade out and remove the static HTML preloader now that React has rendered.
-    // For first-visit: LoadingScreen (z-9999) is already covering the HTML
-    // preloader (z-50), so this fade is invisible — zero black flash.
-    // For return-visits and all other routes: fades out against the live page.
-    const el = document.getElementById('_html-preloader');
-    if (el) {
-      el.classList.add('fade-out');
-      const t = setTimeout(() => el.remove(), 420);
-      return () => clearTimeout(t);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Detect mobile device
     const isMobile = window.innerWidth < 768;
-
-    // Detect if user prefers reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Skip smooth scroll if user prefers reduced motion
-    if (prefersReducedMotion) {
-      return;
-    }
+    if (prefersReducedMotion) return;
 
-    // Initialize Lenis smooth scroll with optimized settings
     const lenis = new Lenis({
-      duration: isMobile ? 1.0 : 1.2, // Faster on mobile
+      duration: isMobile ? 1.0 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
-      smoothWheel: !isMobile, // Disable smooth wheel on mobile (uses touch instead)
+      smoothWheel: !isMobile,
       wheelMultiplier: 1,
-      touchMultiplier: isMobile ? 1.5 : 2, // More conservative on mobile
+      touchMultiplier: isMobile ? 1.5 : 2,
       infinite: false,
     });
 
@@ -54,9 +37,7 @@ function App() {
 
     requestAnimationFrame(raf);
 
-    return () => {
-      lenis.destroy();
-    };
+    return () => { lenis.destroy(); };
   }, []);
 
   return (
@@ -65,10 +46,22 @@ function App() {
       <Routes>
         <Route path="/" element={<Whitelist />} />
         <Route path="/whitelist" element={<Whitelist />} />
-        <Route path="/waitlist-success" element={<WaitlistSuccess />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/features" element={<Features />} />
-        <Route path="/privacy" element={<Privacy />} />
+        <Route
+          path="/waitlist-success"
+          element={<Suspense fallback={null}><WaitlistSuccess /></Suspense>}
+        />
+        <Route
+          path="/pricing"
+          element={<Suspense fallback={null}><Pricing /></Suspense>}
+        />
+        <Route
+          path="/features"
+          element={<Suspense fallback={null}><Features /></Suspense>}
+        />
+        <Route
+          path="/privacy"
+          element={<Suspense fallback={null}><Privacy /></Suspense>}
+        />
       </Routes>
     </>
   );
