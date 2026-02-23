@@ -7,19 +7,19 @@ const showcaseItems = [
     id: "dashboard",
     title: "Centro de Control",
     description: "Vista general de pedidos, métricas y acciones rápidas",
-    image: "/screenshots/dashboard.png",
+    image: "/dashboard.png",
   },
   {
     id: "orders",
     title: "Gestión de Pedidos",
     description: "Confirma, procesa y despacha pedidos en segundos",
-    image: "/screenshots/orders.png",
+    image: "/orders.png",
   },
   {
     id: "shipping",
     title: "Coordinación de Envíos",
     description: "Selecciona couriers y genera etiquetas térmicas",
-    image: "/screenshots/shipping.png",
+    image: "/logisticdashboard.png",
   },
 ];
 
