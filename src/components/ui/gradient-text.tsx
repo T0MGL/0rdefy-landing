@@ -13,7 +13,7 @@ export function GradientText({
 }: GradientTextProps) {
   const variants = {
     primary:
-      "bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent",
+      "bg-gradient-to-r from-primary via-primary/70 to-primary/50 bg-clip-text text-transparent",
     hero: "bg-gradient-to-r from-primary via-primary/80 to-white bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift",
     subtle:
       "bg-gradient-to-r from-white via-primary/60 to-white bg-clip-text text-transparent",

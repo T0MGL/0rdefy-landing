@@ -5,7 +5,6 @@ import { Footer } from "@/components/landing/Footer";
 import {
   Check,
   Minus,
-  Sparkles,
   ArrowRight,
   Clock,
   Gift,
@@ -239,7 +238,6 @@ export default function Pricing() {
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
                     <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary text-black text-xs font-bold shadow-[0_0_30px_rgba(186,234,89,0.5)]">
-                      <Sparkles className="w-3.5 h-3.5" />
                       Más Popular
                     </div>
                   </div>

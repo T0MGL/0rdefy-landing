@@ -7,7 +7,6 @@ import {
   ArrowRight,
   MapPin,
   Mail,
-  Sparkles,
 } from "lucide-react";
 
 export function Footer() {
@@ -211,7 +210,6 @@ export function Footer() {
 
                 {/* Success message */}
                 <div className={`absolute -bottom-6 left-0 flex items-center gap-1.5 text-[11px] text-primary transition-all duration-300 ${isSubscribed ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-1'}`}>
-                  <Sparkles className="w-3 h-3" />
                   <span>¡Gracias por suscribirte!</span>
                 </div>
               </form>

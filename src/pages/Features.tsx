@@ -26,7 +26,6 @@ import {
   Calculator,
   CheckCircle,
   ArrowRight,
-  Sparkles,
   Clock,
   Target,
   TrendingDown,
@@ -56,7 +55,7 @@ const stats = [
     value: 100,
     suffix: "+",
     label: "Tiendas confiando en Ordefy",
-    icon: Sparkles,
+    icon: ShoppingBag,
   },
 ];
 
@@ -532,7 +531,6 @@ export default function Features() {
               <div className="relative inline-flex flex-col items-center gap-8 p-10 md:p-12 rounded-3xl bg-gradient-to-b from-primary/15 via-primary/10 to-primary/5 border border-primary/30">
                 <div className="text-center max-w-2xl">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 mb-6">
-                    <Sparkles className="w-4 h-4 text-primary" />
                     <span className="text-sm font-medium text-primary">
                       Las primeras 100 tiendas obtienen 50% OFF por 12 meses
                     </span>
