@@ -38,8 +38,8 @@ export function Footer() {
     ],
     legal: [
       { label: "Privacidad", href: "/privacy" },
-      { label: "Términos", href: "#" },
-      { label: "Cookies", href: "#" },
+      { label: "Términos", href: "/terms" },
+      { label: "Cookies", href: "/cookies" },
     ],
   };
 

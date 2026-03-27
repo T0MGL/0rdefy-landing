@@ -10,6 +10,8 @@ import Lenis from 'lenis';
 // from the initial bundle (WaitlistSuccess/Privacy use shader-animation)
 const WaitlistSuccess = lazy(() => import('./pages/WaitlistSuccess'));
 const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Cookies = lazy(() => import('./pages/Cookies'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const Features = lazy(() => import('./pages/Features'));
 
@@ -61,6 +63,14 @@ function App() {
         <Route
           path="/privacy"
           element={<Suspense fallback={null}><Privacy /></Suspense>}
+        />
+        <Route
+          path="/terms"
+          element={<Suspense fallback={null}><Terms /></Suspense>}
+        />
+        <Route
+          path="/cookies"
+          element={<Suspense fallback={null}><Cookies /></Suspense>}
         />
       </Routes>
     </>
